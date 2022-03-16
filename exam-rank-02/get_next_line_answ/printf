@@ -1,0 +1,9 @@
+(lldb) target create "a.out"
+Current executable set to '/Users/sichoi/42cursus/exam02/get_next_line/a.out' (arm64).
+(lldb) settings set -- target.run-args  "abcd\\n"
+^C
+^C
+^C
+^C
+^C
+
