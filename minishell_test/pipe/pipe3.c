@@ -27,18 +27,19 @@ int main(int argc, char **argv)
 		cmd[argc - 1] = 0;
 		execve("/bin/ls", cmd, NULL);
 	}
+	pid_t wpid = waitpid(pid, NULL, 0);
 	close(fd[READ]);
 	for (int i=1;i<=argc;i++)
 		dprintf(fd[WRITE], "%s ", argv[i]);
 	close(fd[WRITE]);
-	int status;
-	pid_t wpid = waitpid(pid, &status, 0);
-	if (wpid == pid)
-	{
-		printf("can reach here?\n");
-		if (WIFEXITED(status))
-			return WEXITSTATUS(status);
-	}
-	else
-		return (-1);
+	// int status;
+	// pid_t wpid = waitpid(pid, &status, 0);
+	// if (wpid == pid)
+	// {
+	// 	printf("can reach here?\n");
+	// 	if (WIFEXITED(status))
+	// 		return WEXITSTATUS(status);
+	// }
+	// else
+	// 	return (-1);
 }

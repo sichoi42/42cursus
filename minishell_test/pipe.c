@@ -1,70 +1,61 @@
 #include <unistd.h>
+#include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <string.h>
+#include "libft.h"
 
-int	pipes[2];
+#define READ 0
+#define WRITE 1
 
-void	parent_proc()
+void	command(void)
 {
-	char	*buf;
-	char	*data;
-	ssize_t	s;
-	size_t	len;
-	ssize_t	sent;
+	int		ret;
+	char	buf[BUFSIZ];
 
-	len = 0;
-	sent = 0;
-	buf = 0;
-	close(pipes[0]);
-	while (1)
-	{
-		s = getline(&buf, &len, stdin);
-		if (s == -1)
-			break ;
-		buf[s - 1] = 0;
-		data = buf;
-		while (sent < s)
-			sent += write(pipes[1], buf + sent, s - sent);
-		free(buf);
-		buf = 0;
-		len = 0;
-	}
-	close(pipes[1]);
+	ret = read(STDIN_FILENO, buf, BUFSIZ);
+	buf[ret] = 0;
+	write(STDOUT_FILENO, buf, ft_strlen(buf));
 }
 
-void	child_proc()
+int	main(int argc, char **argv)
 {
-	char	buf[32];
-	ssize_t	s;
+	int		fd[2];
+	pid_t	pid;
 
-	close(pipes[1]);
-	while ((s = read(pipes[0], buf, 31)) > 0)
+	pipe(fd);
+	// printf("read fd: %d\n", fd[READ]);
+	// printf("write fd: %d\n", fd[WRITE]);
+	pid = fork();
+	if (pid == 0)
 	{
-		buf[s + 1] = 0;
-		printf(">%s\n", buf);
+		close(fd[WRITE]);
+		dup2(fd[READ], STDIN_FILENO);
+		close(fd[READ]);
+		char buf[BUFSIZ];
+		int ret = read(STDIN_FILENO, buf, BUFSIZ);
+		buf[ret] = 0;
+		printf("command you wrote: %s\n", buf);
+		char **cmd = ft_split(buf, ' ');
+		cmd[argc - 1] = 0;
+		char *s = ft_strjoin("/bin/", cmd[0]);
+		execve(s, cmd, NULL);
 	}
-	exit(0);
-}
-
-int	main(void)
-{
-	pid_t	child_pid;
-	int		exit_code;
-
-	if (pipe(pipes) != 0)
+	close(fd[READ]);
+	for (int i=1;i<argc;i++)
 	{
-		perror("Error");
-		exit(1);
+		char c = ' ';
+		write(fd[WRITE], argv[i], ft_strlen(argv[i]));
+		write(fd[WRITE], &c, 1);
 	}
-	printf("%d %d\n", pipes[0], pipes[1]);
-	child_pid = fork();
-	if (child_pid == 0)
-		child_proc();
+	close(fd[WRITE]);
+	int status;
+	pid_t wpid = waitpid(pid, &status, 0);
+	if (wpid == pid)
+	{
+		printf("can reach here?\n");
+		if (WIFEXITED(status))
+			return WEXITSTATUS(status);
+	}
 	else
-		parent_proc();
-	wait(&exit_code);
-	return (0);
+		return (-1);
 }
