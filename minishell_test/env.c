@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+int main(int argc, char **argv, char **envp)
 {
 	char	*term;
 
-	term = getenv("*");
+	term = getenv("PATH");
 	if (!term)
 		return (1);
 	printf("Term Type is %s\n", term);

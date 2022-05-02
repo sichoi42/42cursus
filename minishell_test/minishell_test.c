@@ -45,13 +45,14 @@ void	child_proc(int *fd)
 	close(fd[READ]);
 	ret = read(STDIN_FILENO, buf, BUFSIZ);
 	buf[ret] = 0;
-	printf("command to child: %s\n", buf);
+	// printf("command to child: %s\n", buf);
 	cmd = ft_split(buf, ' ');
 	argc = get_argc(cmd);
 	cmd[argc] = 0;
 	s = ft_strjoin("/bin/", cmd[0]);
 	execve(s, cmd, NULL);
 	free(s);
+	exit(0);
 }
 
 int	parent_proc(int *fd, char *line, pid_t pid)
@@ -115,7 +116,7 @@ int	main(void)
 	while (true)
 	{
 		line = readline("minishell> ");
-		printf("command you write: %s\n", line);
+		// printf("command you write: %s\n", line);
 		if (line)
 		{
 			parsing(line);
@@ -125,7 +126,7 @@ int	main(void)
 		}
 		else
 		{
-			printf("|%s|\n", line);
+			// printf("|%s|\n", line);
 			printf("\033[1A");
 			printf("\033[11C");
 			printf("exit\n");
