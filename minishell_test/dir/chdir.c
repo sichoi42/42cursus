@@ -12,8 +12,11 @@ int main(void)
 	printf(">%s\n", path);
 	free(path);
 	path = NULL;
-	if (chdir("..") == -1)
+	if (chdir("~/42cursus") == -1)
+	{
+		printf("error\n");
 		return (1);
+	}
 	path = getcwd(NULL, 0);
 	if (!path)
 		return (1);
