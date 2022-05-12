@@ -10,7 +10,7 @@ t_info	info;
 
 typedef struct s_rect
 {
-	char	is_filled;
+	char	type;
 	float	x;
 	float	y;
 	float	w;
@@ -73,7 +73,7 @@ void	micro_paint(char **map, t_rect *r)
 		while (j< info.w)
 		{
 			ret = is_in_rect(j, i, r);
-			if ((r->is_filled == 'r' && ret == 2) || (r->is_filled == 'R' && ret))
+			if ((r->type == 'r' && ret == 2) || (r->type == 'R' && ret))
 				map[i][j] = r->draw_c;
 			j++;
 		}
@@ -113,9 +113,9 @@ int	main(int argc, char **argv)
 		map[i][j] = 0;
 	}
 	map[i] = 0;
-	while ((ret = fscanf(f, "%c %f %f %f %f %c\n", &r.is_filled, &r.x, &r.y, &r.w, &r.h, &r.draw_c)) == 6)
+	while ((ret = fscanf(f, "%c %f %f %f %f %c\n", &r.type, &r.x, &r.y, &r.w, &r.h, &r.draw_c)) == 6)
 	{
-		if (r.w <= (float)0 || r.h <= (float)0 || !(r.is_filled == 'r' || r.is_filled == 'R'))
+		if (r.w <= (float)0 || r.h <= (float)0 || !(r.type == 'r' || r.type == 'R'))
 			return (file_error());
 		micro_paint(map, &r);
 	}
