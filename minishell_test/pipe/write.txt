@@ -1,4 +1,0 @@
-Parent: Eventually I'll read from STDIN(pipe) and write to STDOUT(file)
-Child: I'm going to connect STDIN to fd from a file
-Child: Eventually I'll read from STDIN(file) and write to STDOUT(pipe)
-this is readfile
