@@ -1,0 +1,24 @@
+# Win_size(W)          Width     Height
+# Ambient(A)           Albedo    Color
+# Camera(C)            Origin    FOV
+# Light(L)             Origin    Albedo    Color
+# Sphere(sp)           Center    Diameter  Color                        TEXTURE
+# Plane(pl)            Point     Normal    Color                        TEXTURE
+# Cylinder(cy)         Center    Normal    Diameter Height    Color     TEXTURE
+
+#### BONUS ####
+# Cone(co)             Center    Normal    Height      Angle     Color  TEXTURE
+# Half_Sphere(sp2)     Center    Diameter  Color                        TEXTURE
+# Cylinder_no_cap(cy2) Center    Normal    Diameter    Height    Color  TEXTURE
+
+A    0.1   rgb 255,255,255
+W 900 600
+C   0,7,0      0,-1,0     90
+L   -3, 10, 0    0.5 rgb  255,255,255
+pl   0,-2, 0    0,1,0 rgb  0,127,127     0
+pl   0,0, -10    0,0,1 rgb  0,127,127    0
+sp   5,2,0    4 rgb  127,0,0             0
+sp   -5,2,0    4 rgb  127,0,0            0
+sp   0,2,5    4 rgb  127,127,0           0
+sp   0,2,-5    4 rgb  127,0,0            0
+sp   0,5,-10    4 rgb  127,0,0           0
